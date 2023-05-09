@@ -4,6 +4,7 @@ const UserValidation = require("../../validation/userValidation");
 const NodemailerJS = require("../../../../config/nodeMailer");
 const logger = require("../../../../config/winston");
 const RandomNumber = require("../../../../util/randomNumber");
+const URL = process.env.SERVER_APP_REACT_URL;
 
 function sendMailToNewEmail(to, verifySecureNumber) {
   return {
@@ -17,7 +18,7 @@ function sendMailToNewEmail(to, verifySecureNumber) {
 function htmlMailForNewMail(to, verifySecureNumber) {
   return `<img src="https://i.imagesup.co/images2/81619ce5c68af9670497153fb7cfe384f29bbf18.png">
   <br /><br />
-  <a href='http://localhost:3000/verify/?email=${to}&verifySecureNumber=${verifySecureNumber}'> Please Click Here For Confirm Your Account </a>`;
+  <a href='${URL}/verify/?email=${to}&verifySecureNumber=${verifySecureNumber}'> Please Click Here For Confirm Your Account </a>`;
 }
 
 function sendMailToLastEmail(to, newEmail) {

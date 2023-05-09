@@ -2,6 +2,7 @@ const UserModelGet = require("../../model/functions/getFunctions");
 const UserModelEdit = require("../../model/functions/editFunctions");
 const NodemailerJS = require("../../../../config/nodeMailer");
 const logger = require("../../../../config/winston");
+const URL = process.env.SERVER_APP_REACT_URL;
 
 function sendMailFunction(to, passowrdSecureNumber) {
   return {
@@ -14,7 +15,7 @@ function sendMailFunction(to, passowrdSecureNumber) {
 
 function htmlMail(to, passowrdSecureNumber) {
   return `<img src="https://i.imagesup.co/images2/81619ce5c68af9670497153fb7cfe384f29bbf18.png">
-  <br /><br /><a href='http://localhost:3000/new_password/?email=${to}&passowrdSecureNumber=${passowrdSecureNumber}'> Reset password </a>`;
+  <br /><br /><a href='${URL}/new_password/?email=${to}&passowrdSecureNumber=${passowrdSecureNumber}'> Reset password </a>`;
 }
 
 const resend = async (req, res) => {
