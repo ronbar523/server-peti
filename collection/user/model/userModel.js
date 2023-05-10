@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
   photo: {
     type: String,
     default:
-      "https://st3.depositphotos.com/9998432/13335/v/600/depositphotos_133352062-stock-illustration-default-placeholder-profile-icon.jpg",
+      "44d94280-a709-4ca8-9247-26fd89f735b9-default-image.jpg",
   },
   password: {
     type: String,
