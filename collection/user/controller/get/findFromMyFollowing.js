@@ -16,30 +16,27 @@ const findUsers = async (req, res) => {
       limit
     );
 
+    if (usersArr.length < 10) {
+      const limit = 10 - usersArr.length;
+      let moreUser = await UserModelGet.findAllUsers(0, limit);
 
-    if(usersArr.length < 10){
-      const limit  =  10 - usersArr.length
-      let moreUser = await UserModelGet.findAllUsers(0, limit)
-
-      for(let x = 0; x < moreUser.length; x++){
+      for (let x = 0; x < moreUser.length; x++) {
         let flag = false;
-        for(let y = 0; y <usersArr.length; y++){
-          if(usersArr[y]._id === moreUser[x]._id){
-            flag = true
-            break
+        const newUserId = moreUser[x]._id.toString()
+        for (let y = 0; y < usersArr.length; y++) {
+          if (newUserId === usersArr[y]._id.toString()) {
+            flag = true;
+            break;
           }
         }
-        if(!flag){
-          usersArr.push(moreUser[x])
+        if (!flag) {
+          usersArr.push(moreUser[x]);
         }
       }
     }
-    
 
     res.json(usersArr);
-    
   } catch (err) {
-    console.log(err)
     res.status(400).json({ err: err });
   }
 };

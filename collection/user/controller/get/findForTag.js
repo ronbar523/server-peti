@@ -69,11 +69,6 @@ const findUsers = async (req, res) => {
       }
     }
 
-    
-
-
-
-
     res.json(usersArr);
   } catch (err) {
     res.status(400).json({ err: err });
