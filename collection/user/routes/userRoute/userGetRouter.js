@@ -22,7 +22,7 @@ Router.get("/find_by_name", FindByNameController.findUsers);
 
 Router.get("/find_for_tag", UserMiddleware, FindForTagController.findUsers);
 
-Router.get("/find_form_my_followers", UserMiddleware, FindMyFollowersController.findUsers);
+Router.get("/find_form_my_following", UserMiddleware, FindMyFollowersController.findUsers);
 
 Router.get("/find_tags", FindTagController.findUsers);
 

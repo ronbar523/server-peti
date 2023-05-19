@@ -3,8 +3,10 @@ const UserModelGet = require("../../model/functions/getFunctions");
 const findUsers = async (req, res) => {
   try {
     const { firstName, lastName, userName, fullName, skip, limit } = req.query;
+    let arr = [];
+    let usersArr = [];
 
-    const usersArr = await UserModelGet.findByName(
+    arr = await UserModelGet.findByName(
       firstName,
       lastName,
       userName,
@@ -13,8 +15,13 @@ const findUsers = async (req, res) => {
       limit
     );
 
+    for (let x = 0; x < arr.length; x++) {
+      if (arr[x].userName !== "User Not Available") {
+        usersArr.push(arr[x]);
+      }
+    }
 
-    res.json( usersArr );
+    res.json(usersArr);
   } catch (err) {
     res.status(400).json({ err: err });
   }

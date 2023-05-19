@@ -27,13 +27,13 @@ const createPostArrays = (
   return newPostArray.save();
 };
 
-const newPost = (createdBy, postKind, arrMyPhoto) => {
+const newPost = (createdBy, postKind, postId) => {
   if (postKind === "Photo Post") {
     return PostArrays.findOneAndUpdate(
       { createdBy: createdBy },
       {
         $push: {
-          arrMyPhoto: arrMyPhoto,
+          arrMyPhoto: postId,
         },
       },
       { new: true }
@@ -41,13 +41,13 @@ const newPost = (createdBy, postKind, arrMyPhoto) => {
   }
 };
 
-const sendTag = (createdBy, arrTagMePhoto) => {
+const sendTag = (createdBy, postId) => {
   return PostArrays.findOneAndUpdate(
     {createdBy: createdBy},
     {
       $push: {
         arrTagMePhoto: {
-          $each: [arrTagMePhoto],
+          $each: [postId],
           $position: 0,
         },
       },

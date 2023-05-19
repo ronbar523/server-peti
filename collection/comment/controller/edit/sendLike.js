@@ -1,6 +1,7 @@
 const CommentModelEdit = require("../../model/functions/editFunctions");
 const CommentModelGet = require("../../model/functions/getFunctions");
 const PostModelGet = require("../../../post/model/functions/getFunctions");
+const LikeModelEdit = require("../../../like/model/functions/editFunctions")
 
 const sendLike = async (req, res) => {
   try {
@@ -21,9 +22,10 @@ const sendLike = async (req, res) => {
 
       if (!flagLike) {
         await CommentModelEdit.likePost(commentId, myId);
+        await LikeModelEdit.newLikeComment(myId, commentId)
         res.json({ msg: "New like" });
       } else {
-        res.status(203).json({ msg: "You alreday did like for this post" });
+        res.status(203).json({ msg: "You already did like for this post" });
       }
     } else {
       const post = await PostModelGet.findPostById(postId);

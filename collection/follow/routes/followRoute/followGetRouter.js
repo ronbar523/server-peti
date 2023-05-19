@@ -43,7 +43,7 @@ Router.get("/find_length_follow/:id", FindLengthUserFollowController.find)
 
 Router.get("/filter_followers/:id" , FilterFollowersController.filterFollowers )
 
-Router.get("/filter_followers/:id" , FilterFollowingController.filterFollowing )
+Router.get("/filter_following/:id" , FilterFollowingController.filterFollowing )
 
 Router.get("/filter_my_followers", UserMiddleware, FilterMyFollowersController.filterFollowers )
 

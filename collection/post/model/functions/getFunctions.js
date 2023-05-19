@@ -9,6 +9,12 @@ const findPosts = (arrPostsId, skip, limit) => {
     .limit(limit);
 };
 
+const completePost = (arrPostsId) => {
+  return Post.find({
+    _id: { $in: arrPostsId },
+  })
+};
+
 const findPostById = (id) => {
   return Post.findById(id);
 };
@@ -37,4 +43,5 @@ module.exports = {
   findPosts,
   findPostById,
   findAllPosts,
+  completePost
 };

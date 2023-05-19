@@ -18,7 +18,7 @@ const editPost = (
         category: category,
         location: location,
         arrTag: arrTag,
-        lastUpdate: lastUpdate
+        lastUpdate: lastUpdate,
       },
     },
     { new: true }
@@ -96,6 +96,31 @@ const removeLike = (id, arrLikes) => {
   );
 };
 
+const savePost = (id, arrSaves) => {
+  return Post.findByIdAndUpdate(
+    id,
+    {
+      $push: {
+        arrSaves: {
+          $each: [arrSaves],
+          $position: 0,
+        },
+      },
+    },
+    { new: true }
+  );
+};
+
+const unSavePost = (id, arrSaves) => {
+  return Post.findByIdAndUpdate(
+    id,
+    {
+      $pull: { arrSaves: arrSaves },
+    },
+    { new: true }
+  );
+};
+
 module.exports = {
   editPost,
   editUserPhoto,
@@ -104,4 +129,6 @@ module.exports = {
   removeTag,
   likePost,
   removeLike,
+  savePost,
+  unSavePost,
 };

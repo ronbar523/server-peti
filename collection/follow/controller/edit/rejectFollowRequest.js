@@ -17,7 +17,7 @@ const reject = async (req, res) => {
     let notAvailableFlag = false;
     let blockUserFlag = false;
     let deleteFlag = false;
-    let alredayAcceptFlag = false;
+    let alreadyAcceptFlag = false;
 
     if (myId !== id) {
       if (userName !== "User Not Available") {
@@ -62,7 +62,7 @@ const reject = async (req, res) => {
             notAvailableFlag,
             blockUserFlag,
             deleteFlag,
-            alredayAcceptFlag,
+            alreadyAcceptFlag,
           });
         } else {
           const myArrFollowers = myFollow[0].arrFollowers;
@@ -72,29 +72,29 @@ const reject = async (req, res) => {
             if (myArrFollowers.length >= userArrFollowing.length) {
               for (let x = 0; x < userArrFollowing.length; x++) {
                 if (userArrFollowing[x].toString() === myId) {
-                  alredayAcceptFlag = true;
+                  alreadyAcceptFlag = true;
                   break;
                 }
               }
             } else {
               for (let x = 0; x < myArrFollowers.length; x++) {
                 if (myArrFollowers[x].toString() === userId) {
-                  alredayAcceptFlag = true;
+                  alreadyAcceptFlag = true;
                   break;
                 }
               }
             }
           }
 
-          if (alredayAcceptFlag) {
+          if (alreadyAcceptFlag) {
             res.status(203).json({
-              msg: "you alreday accept this request",
+              msg: "you already accept this request",
               rejectFlag,
               blockMeFlag,
               notAvailableFlag,
               blockUserFlag,
               deleteFlag,
-              alredayAcceptFlag,
+              alreadyAcceptFlag,
             });
           } else {
             const myBlock = await BlockModelGet.findBlockByCreatedBy(myId);
@@ -129,7 +129,7 @@ const reject = async (req, res) => {
                 notAvailableFlag,
                 blockUserFlag,
                 deleteFlag,
-                alredayAcceptFlag,
+                alreadyAcceptFlag,
               });
             } else {
               const myArrMyBlock = myBlock[0].arrMyBlock;
@@ -161,7 +161,7 @@ const reject = async (req, res) => {
                   notAvailableFlag,
                   blockUserFlag,
                   deleteFlag,
-                  alredayAcceptFlag,
+                  alreadyAcceptFlag,
                 });
               } else {
                 notAvailableFlag = true;
@@ -172,7 +172,7 @@ const reject = async (req, res) => {
                   notAvailableFlag,
                   blockUserFlag,
                   deleteFlag,
-                  alredayAcceptFlag,
+                  alreadyAcceptFlag,
                 });
               }
             }
@@ -187,7 +187,7 @@ const reject = async (req, res) => {
           notAvailableFlag,
           blockUserFlag,
           deleteFlag,
-          alredayAcceptFlag,
+          alreadyAcceptFlag,
         });
       }
     } else {

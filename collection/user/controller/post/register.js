@@ -5,6 +5,8 @@ const FollowModelPost = require("../../../follow/model/functions/postFunctions")
 const BlockModelPost = require("../../../block/model/functions/postFunctions");
 const PostArrayModelPost = require("../../../postArrays/model/functions/postFunctions");
 const CommentArrayModelPost = require("../../../commentArrays/model/functions/postFunctions");
+const LikeModelPost = require("../../../like/model/functions/postFunctions");
+
 
 const Bcryptjs = require("../../../../config/bcrypt");
 const NodemailerJS = require("../../../../config/nodeMailer");
@@ -77,9 +79,10 @@ const createUser = async (req, res) => {
         );
 
         await FollowModelPost.createFollow(user._id),
-          await BlockModelPost.createBlock(user._id);
+        await BlockModelPost.createBlock(user._id);
         await PostArrayModelPost.createPostArrays(user._id);
         await CommentArrayModelPost.createCommentArrays(user._id);
+        await LikeModelPost.createLike(user._id);
 
         res.json({
           status: 201,

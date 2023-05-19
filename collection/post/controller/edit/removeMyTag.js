@@ -3,17 +3,16 @@ const PostArraysModelEdit = require("../../../postArrays/model/functions/editFun
 
 const removeTag = async (req, res) => {
   try {
-
-
     const myId = req.jwtData._id;
     const { postId } = req.params;
+    const { postKind } = req.query
 
-    await PostModelEdit.removeTag(postId, myId)
-    await PostArraysModelEdit.remoevTag(myId, postId)
-    
+    await PostModelEdit.removeTag(postId, myId);
+    await PostArraysModelEdit.removeTag(myId, postKind, postId);
 
-    res.json({msg: "You remove your tag"})
+    res.json({ msg: "You remove your tag" });
   } catch (err) {
+    console.log(err)
     res.status(400).json({ status: 400, err: err });
   }
 };

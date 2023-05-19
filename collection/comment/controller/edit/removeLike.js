@@ -1,6 +1,7 @@
 const CommentModelEdit = require("../../model/functions/editFunctions");
 const CommentModelGet = require("../../model/functions/getFunctions");
 const PostModelGet = require("../../../post/model/functions/getFunctions")
+const LikeModelEdit = require("../../../like/model/functions/editFunctions")
 
 const removeLike = async (req, res) => {
   try {
@@ -21,6 +22,7 @@ const removeLike = async (req, res) => {
 
       if (flagLike) {
         await CommentModelEdit.removeLike(commentId, myId);
+        await LikeModelEdit.unLikeComment(myId, commentId)
         res.json({ msg: "Remove like" });
       } else {
         res.status(203).json({ msg: "You not have like on this post" });

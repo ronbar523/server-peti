@@ -1,14 +1,19 @@
 const { User } = require("../userModel");
 
-const deleteMyUser = (id, 
-  // userName, fullName,
-   email, userDeleteEmail, photo) => {
+const deleteMyUser = (
+  id,
+  userName,
+  fullName,
+  email,
+  userDeleteEmail,
+  photo
+) => {
   return User.findByIdAndUpdate(
     id,
     {
       $set: {
-        // userName: userName,
-        // fullName: fullName,
+        userName: userName,
+        fullName: fullName,
         email: email,
         userDeleteEmail: userDeleteEmail,
         photo: photo,
@@ -17,8 +22,6 @@ const deleteMyUser = (id,
     { new: true }
   );
 };
-
-
 
 module.exports = {
   deleteMyUser,

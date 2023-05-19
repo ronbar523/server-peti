@@ -5,8 +5,15 @@ const FollowModelEdit = require("../../../follow/model/functions/editFunctions")
 const BlockModelGet = require("../../../block/model/functions/getFunctinos");
 const BlockModelEdit = require("../../../block/model/functions/editFunctions");
 const PostModelDelete = require("../../../post/model/functions/deleteFunctions");
-const CommentModelEdit = require("../../../comment/model/functions/editFunctions");
+const PostModelEdit = require("../../../post/model/functions/editFunctions");
+const PostModelGet = require("../../../post/model/functions/getFunctions");
+const PostArraysModelDelete = require("../../../postArrays/model/functions/deleteFunctions");
+const PostArraysModelGet = require("../../../postArrays/model/functions/getFunctions");
 
+const CommentModelEdit = require("../../../comment/model/functions/editFunctions");
+const CommentModelDelete = require("../../../comment/model/functions/deleteFunctions");
+const LikeModelGet = require("../../../like/model/functions/getFunctions");
+const LikeModelEdit = require("../../../like/model/functions/editFunctions");
 
 const deleteUser = async (req, res) => {
   try {
@@ -23,7 +30,10 @@ const deleteUser = async (req, res) => {
     const myBlockId = myBlock[0]._id;
     const myArrMyBlock = myBlock[0].arrMyBlock;
     const myArrBlockMe = myBlock[0].arrBlockMe;
-    
+
+    const myLike = await LikeModelGet.findLikeByCreatedBy(myId);
+    const myLikePost = myLike[0].arrPostLikes;
+    const myLikeComment = myLike[0].arrCommentLikes;
 
     for (let x = 0; x < myArrFollowing.length; x++) {
       const userId = myArrFollowing[x];
@@ -55,9 +65,7 @@ const deleteUser = async (req, res) => {
 
     for (let x = 0; x < myArrBlockMe.length; x++) {
       const userId = myArrBlockMe[x];
-
       await BlockModelEdit.unBlockUserByCreatedBy(userId, myId);
-
       await BlockModelEdit.userUnBlock(myBlockId, userId);
     }
 
@@ -68,28 +76,77 @@ const deleteUser = async (req, res) => {
       await BlockModelEdit.userUnBlockByCreatedBy(userId, myId);
     }
 
+    for (let x = 0; x < myLikePost.length; x++) {
+      const postId = myLikePost[x];
+      await PostModelEdit.removeLike(postId, myId);
+      await LikeModelEdit.unLikePost(myId, postId);
+    }
+
+    for (let x = 0; x < myLikeComment.length; x++) {
+      const commentId = myLikeComment[x];
+      await CommentModelEdit.removeLike(commentId, myId);
+      await LikeModelEdit.unLikeComment(myId, commentId);
+    }
 
     const myUser = await UserModelGet.findUserById(myId);
-    // const userName = "User Not Available";
+    const userName = "User Not Available";
     const email = "-";
     const userDeleteEmail = myUser.email;
-    // const fullName = "User Not Available";
+    const fullName = "User Not Available";
     const photo =
       "https://st3.depositphotos.com/9998432/13335/v/600/depositphotos_133352062-stock-illustration-default-placeholder-profile-icon.jpg";
-    
-      await UserModelDelete.deleteMyUser(
+
+    await UserModelDelete.deleteMyUser(
       myId,
-      // userName,
-      // fullName,
+      userName,
+      fullName,
       email,
       userDeleteEmail,
       photo
     );
 
-    await PostModelDelete.deleteAllMyPosts(myId)
-    await CommentModelEdit.editUserInfo(myId, photo, userName)
+    const myPostArrays = await PostArraysModelGet.findPostArraysByCreatedBy(
+      myId
+    );
+    const myPostArr = [
+      ...myPostArrays[0].arrMyPhoto,
+      ...myPostArrays[0].arrMyVideo,
+      ...myPostArrays[0].arrMyTextPost,
+    ];
+    for (let x = 0; x < myPostArr.length; x++) {
+      const post = await PostModelGet.findPostById(myPostArr[x]);
+      const postId = post._id;
+      const savePostArr = post.arrSaves;
+      const tagPostArr = post.arrTag;
+      const postKind = post.postKind;
+      for (let y = 0; y < savePostArr.length; y++) {
+        const userId = savePostArr[y];
+        await PostArraysModelDelete.unSavePhotoPostByCreatedBy(
+          userId,
+          postKind,
+          postId
+        );
+      }
+
+      for (let y = 0; y < tagPostArr.length; y++) {
+        const userId = tagPostArr[y];
+
+        await PostArraysModelDelete.removeTagByCreatedBy(
+          userId,
+          postKind,
+          postId
+        );
+      }
+
+      await CommentModelDelete.deleteAllCommentsInPost(postId);
+    }
+
+    await PostModelDelete.deleteAllMyPosts(myId);
+
+    await CommentModelEdit.editUserInfo(myId, photo, userName);
     res.json({ msg: "Your user deleted" });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ status: 400, err: err });
   }
 };

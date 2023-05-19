@@ -10,7 +10,6 @@ const deletePost = async (req, res) => {
     let myId = req.jwtData._id;
 
     const post = await PostModelGet.findPostById(postId);
-    
 
     if (post !== null) {
       const postCreatedBy = post.createdBy;
@@ -20,22 +19,37 @@ const deletePost = async (req, res) => {
           throw res
             .status(401)
             .json({ msg: "You not alowed to delete this post" });
-        } 
+        }
       }
-      
 
-      const userCrearedId = post.createdBy
+      const userCrearedId = post.createdBy;
       const postTags = post.arrTag;
+      const postSave = post.arrSaves
+      const postKind = post.postKind
 
+    
+      // remove tag
       for (let x = 0; x < postTags.length; x++) {
         const userId = postTags[x];
-        await PostArraysModelDelete.remoevTagByCreatedBy(userId, postId);
+        await PostArraysModelDelete.removeTagByCreatedBy(userId, postKind, postId);
       }
 
+      // remove Save
+      for(let x = 0; x < postSave.length; x++){
+        const userId = postSave[x];
+        await PostArraysModelDelete.unSavePhotoPostByCreatedBy(userId, postKind, postId)
+      }
+
+      // delete Comment
       await CommentModelDelete.deleteAllCommentsInPost(postId);
 
+
       await PostModelDelete.deletePostById(postId);
-      await PostArraysModelDelete.removePost(userCrearedId, post.postKind, postId);
+      await PostArraysModelDelete.removePost(
+        userCrearedId,
+        post.postKind,
+        postId
+      );
 
       res.json({ msg: "Post deleted" });
     } else {

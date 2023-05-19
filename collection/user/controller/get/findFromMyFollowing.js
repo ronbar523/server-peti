@@ -18,19 +18,21 @@ const findUsers = async (req, res) => {
 
     if (usersArr.length < 10) {
       const limit = 10 - usersArr.length;
-      let moreUser = await UserModelGet.findAllUsers(0, limit);
+      let moreUsers = await UserModelGet.findAllUsers(0, limit);
 
-      for (let x = 0; x < moreUser.length; x++) {
-        let flag = false;
-        const newUserId = moreUser[x]._id.toString()
-        for (let y = 0; y < usersArr.length; y++) {
-          if (newUserId === usersArr[y]._id.toString()) {
-            flag = true;
-            break;
+      for (let x = 0; x < moreUsers.length; x++) {
+        if (moreUsers[x].userName !== "User Not Available") {
+          let flag = false;
+          const newUserId = moreUsers[x]._id.toString();
+          for (let y = 0; y < usersArr.length; y++) {
+            if (newUserId === usersArr[y]._id.toString()) {
+              flag = true;
+              break;
+            }
           }
-        }
-        if (!flag) {
-          usersArr.push(moreUser[x]);
+          if (!flag) {
+            usersArr.push(moreUsers[x]);
+          }
         }
       }
     }

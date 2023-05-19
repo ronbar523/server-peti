@@ -50,7 +50,7 @@ const block = async (req, res) => {
 
         if (userAlreadyBlocked) {
           res.status(203).json({
-            msg: "User alreday blocked",
+            msg: "User already blocked",
             UserBlockedFlag,
             userDeletedFlag,
             userAlreadyBlocked,

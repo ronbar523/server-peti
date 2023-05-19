@@ -167,7 +167,7 @@ const follow = async (req, res) => {
 
             if (requestFollowFlag) {
               res.status(203).json({
-                msg: "You alreday request to follow after this user",
+                msg: "You already request to follow after this user",
                 followFlag,
                 requestFollowFlag,
                 blockMeFlag,

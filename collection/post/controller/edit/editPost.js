@@ -65,7 +65,7 @@ const edit = async (req, res) => {
         }
 
         for (let x = 0; x < removeTag.length; x++) {
-          await PostArraysModelEdit.remoevTag(removeTag[x], postId);
+          await PostArraysModelEdit.removeTag(removeTag[x], postId);
         }
 
         const postUpdate = await PostModelEdit.editPost(

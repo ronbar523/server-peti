@@ -10,7 +10,7 @@ const findPostComments = (arrComments, skip, limit) => {
   })
     .skip(skip)
     .limit(limit)
-    .sort({ arrLikes: -1, createdAt: -1 });
+    .sort({ arrLikes: -1 });
 };
 
 const findCommentComments = (arrComments, skip, limit) => {
@@ -18,16 +18,9 @@ const findCommentComments = (arrComments, skip, limit) => {
     _id: { $in: arrComments },
   })
     .skip(skip)
-    .limit(limit);
+    .limit(limit)
+    .sort({ createdAt: -1 });
 };
-
-
-
-
-
-
-
-
 
 module.exports = {
   findPostComments,

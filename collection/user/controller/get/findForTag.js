@@ -9,7 +9,6 @@ const findUsers = async (req, res) => {
     userName = userName.toLowerCase();
 
     const myFollow = await FollowModelGet.findFollowByCreatedBy(myId);
-
     const myFollowing = myFollow[0].arrFollowing;
 
     let usersArr = [];
@@ -36,30 +35,31 @@ const findUsers = async (req, res) => {
       for (let y = 0; y < moreUsers.length; y++) {
         let flag = false;
         if (usersArr.length <= limit) {
-          const userId = moreUsers[y]._id.toString();
-          for (let x = 0; x < usersArr.length; x++) {
-            if (moreUsers[y].userName === usersArr[x].userName) {
-              flag = true;
-              break;
-            }
-          }
-
-          if (!flag) {
-            if (userId !== myId) {
-              for (let x = 0; x < myBlockArr.length; x++) {
-                if (myBlockArr[x].toString() === userId) {
-                  flag = true;
-                  break;
-                }
+          if (moreUsers[y].userName !== "User Not Available") {
+            const userId = moreUsers[y]._id.toString();
+            for (let x = 0; x < usersArr.length; x++) {
+              if (moreUsers[y].userName === usersArr[x].userName) {
+                flag = true;
+                break;
               }
-              if (!flag) {
-                for (let x = 0; x < blockMeArr.length; x++) {
-                  if (blockMeArr[x].toString() === userId) {
+            }
+            if (!flag) {
+              if (userId !== myId) {
+                for (let x = 0; x < myBlockArr.length; x++) {
+                  if (myBlockArr[x].toString() === userId) {
                     flag = true;
                     break;
                   }
                 }
-                usersArr.push(moreUsers[y]);
+                if (!flag) {
+                  for (let x = 0; x < blockMeArr.length; x++) {
+                    if (blockMeArr[x].toString() === userId) {
+                      flag = true;
+                      break;
+                    }
+                  }
+                  usersArr.push(moreUsers[y]);
+                }
               }
             }
           }
@@ -68,6 +68,7 @@ const findUsers = async (req, res) => {
         }
       }
     }
+
 
     res.json(usersArr);
   } catch (err) {

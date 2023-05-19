@@ -39,6 +39,7 @@ const findByName = (firstName, lastName, userName, fullName, skip, limit) => {
       { fullName: { $regex: "^" + fullName.toString(), $options: "i" } },
     ],
   })
+
     .select(["-password", "-__v"])
     .skip(skip)
     .limit(limit);
@@ -81,5 +82,5 @@ module.exports = {
   findForTag,
   findTag,
   filterUsers,
-  findAllUsers
+  findAllUsers,
 };

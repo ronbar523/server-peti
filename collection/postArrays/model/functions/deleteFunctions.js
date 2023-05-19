@@ -1,31 +1,43 @@
 const { PostArrays } = require("../postArraysModel");
 
-const removePost = (createdBy, postKind, arrMyPhoto) => {
+const removePost = (createdBy, postKind, postId) => {
   if (postKind === "Photo Post") {
     return PostArrays.findOneAndUpdate(
-      {createdBy: createdBy},
+      { createdBy: createdBy },
       {
-        $pull: { arrMyPhoto: arrMyPhoto },
+        $pull: { arrMyPhoto: postId },
       },
       { new: true }
     );
   }
 };
 
-
-const remoevTagByCreatedBy = (createdBy, arrTagMePhoto) => {
-  return PostArrays.findOneAndUpdate(
-    {createdBy: createdBy},
-    {
-      $pull: { arrTagMePhoto: arrTagMePhoto },
-    },
-    { new: true }
-  );
+const removeTagByCreatedBy = (createdBy, postKind, postId) => {
+  if (postKind === "Photo Post") {
+    return PostArrays.findOneAndUpdate(
+      { createdBy: createdBy },
+      {
+        $pull: { arrTagMePhoto: postId },
+      },
+      { new: true }
+    );
+  }
 };
 
-
+const unSavePhotoPostByCreatedBy = (createdBy, postKind, postId) => {
+  if (postKind === "Photo Post") {
+    return PostArrays.findOneAndUpdate(
+      { createdBy: createdBy },
+      {
+        $pull: { arrMySavePhoto: postId },
+      },
+      { new: true }
+    );
+  }
+};
 
 module.exports = {
   removePost,
-  remoevTagByCreatedBy
+  removeTagByCreatedBy,
+  unSavePhotoPostByCreatedBy,
 };
