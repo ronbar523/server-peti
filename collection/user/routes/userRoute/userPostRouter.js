@@ -6,16 +6,16 @@ const RegisterController = require("../../controller/post/register");
 const LoginController = require("../../controller/post/login");
 const ResendVerifyController = require("../../controller/post/resendVerifyMail");
 const ResendForgetPasswordController = require("../../controller/post/resendForgetPassowrdMail");
-const UploadProfilePhotoController = require("../../controller/post/uploadPhoto");
+const UploadProfileMediaController = require("../../controller/post/uploadMedia");
 
 Router.post("/register", RegisterController.createUser);
 Router.post("/login", LoginController.connectUser);
 
 Router.post(
-  "/upload_photo",
+  "/upload_media",
   UserMiddleware,
   UploadFile.upload.single("photo"),
-  UploadProfilePhotoController.uploadPhoto
+  UploadProfileMediaController.uploadMedia
 );
 
 Router.post(

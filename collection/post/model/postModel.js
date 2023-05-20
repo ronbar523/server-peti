@@ -39,7 +39,6 @@ const postSchema = new mongoose.Schema({
 
   postPhoto: {
     type: String,
-    required: true,
   },
 
   arrTag: [

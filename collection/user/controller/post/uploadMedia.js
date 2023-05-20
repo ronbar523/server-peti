@@ -1,11 +1,11 @@
-const uploadPhoto = async (req,res) => {
+const uploadMedia = async (req,res) => {
   try {
     const url = req.protocol + "://" + req.get("host");
   
-    const photo = url + "/public/" + req.file.filename;
+    const media = url + "/public/" + req.file.filename;
 
   
-    res.json({ status: 200, photo: photo });
+    res.json({ status: 200, media: media });
   
   } catch (err) {
     res.status(400).json({ status: 400, err: err });
@@ -13,5 +13,5 @@ const uploadPhoto = async (req,res) => {
 }
 
 module.exports = {
-  uploadPhoto,
+  uploadMedia,
 };
