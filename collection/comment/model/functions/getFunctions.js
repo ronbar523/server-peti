@@ -19,7 +19,6 @@ const findCommentComments = (arrComments, skip, limit) => {
   })
     .skip(skip)
     .limit(limit)
-    .sort({ createdAt: -1 });
 };
 
 module.exports = {
